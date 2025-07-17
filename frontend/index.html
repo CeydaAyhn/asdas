@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Login & Register</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <h1>Kullanıcı Girişi</h1>
+
+  <form id="loginForm">
+    <input type="email" id="loginEmail" placeholder="Email" required />
+    <input type="password" id="loginPassword" placeholder="Şifre" required minlength="6" />
+    <button type="submit">Giriş Yap</button>
+  </form>
+
+  <button id="forgotPasswordBtn">Şifreni mi unuttun?</button>
+
+  <hr />
+
+  <h1>Kayıt Ol</h1>
+
+  <form id="registerForm">
+    <input type="email" id="registerEmail" placeholder="Email" required />
+    <input type="text" id="registerUsername" placeholder="Kullanıcı Adı" required minlength="3" />
+    <input type="password" id="registerPassword" placeholder="Şifre" required minlength="6" />
+    <input type="text" id="registerFirstName" placeholder="Ad (opsiyonel)" />
+    <input type="text" id="registerLastName" placeholder="Soyad (opsiyonel)" />
+    <button type="submit">Kayıt Ol</button>
+  </form>
+
+  <hr />
+
+  <!-- 🔐 Şifremi Unuttum Modal -->
+  <div id="forgotPasswordModal" style="display:none; background:#fff; padding:20px; border:1px solid #ccc; position:fixed; top:30%; left:50%; transform:translate(-50%, -30%); z-index:999; box-shadow: 0 0 10px rgba(0,0,0,0.3);">
+    <h3>Şifreni mi unuttun?</h3>
+    <input type="email" id="forgotEmailInput" placeholder="E-posta adresinizi girin" style="width:100%; padding:10px; margin-bottom:10px;">
+    <button id="sendForgotEmailBtn">Gönder</button>
+    <button onclick="closeForgotModal()" style="margin-top:10px;">İptal</button>
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
