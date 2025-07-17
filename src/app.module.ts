@@ -1,9 +1,7 @@
+// src/app.module.ts
 import { Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-
-import { AuthModule } from './auth/auth.module';
-import { UsersModule } from './users/users.module';
 import { MoviesModule } from './movies/movies.module';
 import { ActorsModule } from './actors/actors.module';
 
@@ -12,43 +10,29 @@ import { ActorsModule } from './actors/actors.module';
     ConfigModule.forRoot({
       isGlobal: true,
     }),
-
-    // Birinci DB: film_auth_db (auth ve users için)
     TypeOrmModule.forRootAsync({
+      name: 'moviesConnection', // Bu satır ÇOK ÖNEMLİ!
       imports: [ConfigModule],
       inject: [ConfigService],
-      name: 'authConnection',
-      useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
-        host: configService.get('DB_HOST'),
-        port: +configService.get('DB_PORT'),
-        username: configService.get('DB_USERNAME'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('AUTH_DB_NAME'),
-        autoLoadEntities: true,
-        synchronize: true,
-      }),
-    }),
+      useFactory: (configService: ConfigService) => {
+        console.log('DB CONFIG:', {
+          host: configService.get<string>('DB_HOST'),
+          port: configService.get<number>('DB_PORT'),
+          database: configService.get<string>('DB_NAME'),
+        });
 
-    // İkinci DB: film_db (movies ve actors için)
-    TypeOrmModule.forRootAsync({
-      imports: [ConfigModule],
-      inject: [ConfigService],
-      name: 'moviesConnection',
-      useFactory: (configService: ConfigService) => ({
-        type: 'mysql',
-        host: configService.get('DB_HOST'),
-        port: +configService.get('DB_PORT'),
-        username: configService.get('DB_USERNAME'),
-        password: configService.get('DB_PASSWORD'),
-        database: configService.get('MOVIE_DB_NAME'),
-        autoLoadEntities: true,
-        synchronize: true,
-      }),
+        return {
+          type: 'mysql',
+          host: configService.get('DB_HOST'),
+          port: +configService.get('DB_PORT'),
+          username: configService.get('DB_USERNAME'),
+          password: configService.get('DB_PASSWORD'),
+          database: configService.get('DB_NAME'),
+          autoLoadEntities: true,
+          synchronize: true,
+        };
+      },
     }),
-
-    AuthModule,
-    UsersModule,
     MoviesModule,
     ActorsModule,
   ],

@@ -9,10 +9,10 @@ import * as crypto from 'crypto';
 @Injectable()
 export class UsersService {
   constructor(
-    @InjectRepository(User)
+    @InjectRepository(User, 'authConnection') // 🔥 BURAYA dikkat!
     private usersRepository: Repository<User>,
   ) {}
-
+  
   async create(registerDto: RegisterDto): Promise<User> {
     // Email zaten var mı kontrol et
     const existingUser = await this.usersRepository.findOne({
